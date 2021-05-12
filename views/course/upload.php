@@ -11,6 +11,12 @@ use Opencast\LTI\LtiLink;
 $vis = !is_null(CourseConfig::get($course_id)->COURSE_HIDE_EPISODES)
     ? boolval(CourseConfig::get($course_id)->COURSE_HIDE_EPISODES)
     : \Config::get()->OPENCAST_HIDE_EPISODES;
+
+$visibility_text = [
+    'invisible' => $_('Video ist nur für Sie sichtbar'),
+    'visible'   => $_('Video ist für Teilnehmende sichtbar'),
+    'free'      => $_('Video ist für jeden sichtbar')
+];
 ?>
 
 <form id="upload_form" action="#" enctype="multipart/form-data" method="post" class="default">
@@ -194,6 +200,21 @@ if($vis == false){
         <?= $_('Beschreibung') ?>
         <textarea class="oc_input" cols="50" rows="5" id="description" name="description"></textarea>
     </label>
+    
+
+    <label>
+        <?= $_('Sichtbarkeit') ?>
+        <select name="visibility">
+            <? foreach ($visibility_text as $key => $text) : ?>
+                <? if ($vis && ($key == "invisible") || !$vis && ($key == "visible")) : ?>
+                    <option selected value="<?= $key ?>"><?= $text ?></option>
+                <? else : ?>
+                    <option value="<?= $key ?>"><?= $text ?></option>
+                <? endif ?>
+            <? endforeach; ?>
+        </select>
+    </label>
+
 
     <section class="hgroup">
         <label>
